@@ -1,0 +1,57 @@
+
+
+
+    <!-- Page wrapper for sticky footer -->
+    <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
+    <main class="page-wrapper">
+
+
+        <!-- Navbar -->
+        <!-- Remove "navbar-sticky" class to make navigation bar scrollable with the page -->
+        <header class="header navbar navbar-expand-lg navbar-light position-absolute navbar-sticky">
+          <div class="container px-3">
+            <a href="/" class="navbar-brand pe-3">
+              <img src="img/WAZAR.png" width="80">
+            </a>
+            <div id="navbarNav" class="offcanvas offcanvas-end">
+              <div class="offcanvas-header border-bottom">
+                <h5 class="offcanvas-title">Menu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              </div>
+              <div class="offcanvas-body">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a href="/" class="nav-link">Accueil</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/reservation" class="nav-link">Réservation</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/doctors" class="nav-link">Docteurs</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/contact" class="nav-link">Contactez-nous</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/login" class="nav-link">Espace du docteur</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="offcanvas-footer border-top">
+               
+                <a href="/login" class="btn btn-primary w-100">
+                  <i class="bx bx-plus-medical fs-4 lh-1 me-1"></i>
+                  &nbsp;login
+                </a>
+              </div>      
+            </div>
+            <button type="button" class="navbar-toggler" data-bs-toggle="offcanvas" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <a href="/login" class="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex">
+              <i class="bx bx-plus-medical fs-5 lh-1 me-1"></i>
+              &nbsp;login 
+            </a>
+            
+          </div>
+        </header>

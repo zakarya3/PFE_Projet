@@ -1,0 +1,90 @@
+<%- include('../partials/header') %>
+  <%- include('../partials/navbar') %>
+    <!-- Page content -->
+    <section class="position-relative h-100 pt-5 pb-4">
+      <!-- Sign up form -->
+      <div class="container d-flex flex-wrap justify-content-center justify-content-xl-start h-100 pt-5">
+        <div class="w-100 align-self-end pt-1 pt-md-4 pb-4" style="max-width: 526px;">
+          <h1 class="text-center text-xl-start">Créer un compte</h1>
+          <p class="text-center text-xl-start pb-3 mb-3">Vous avez déjà un compte? <a href="account-signin.html">Se
+              connecter ici.</a></p>
+          <form class="needs-validation" method="post" action="">
+            <div class="types">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="client-checkbox" name="type" checked>
+                <label class="form-check-label" for="ex-radio-4">Client</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="doctor-checkbox" name="type">
+                <label class="form-check-label" for="ex-radio-5">Doctor</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="position-relative mb-4">
+                  <label for="name" class="form-label fs-base">Nom et prénom</label>
+                  <input type="text" id="name" name="name" class="form-control form-control-lg" required>
+                  <div class="invalid-feedback position-absolute start-0 top-100">Please enter your name!</div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="position-relative mb-4">
+                  <label for="email" class="form-label fs-base">Email</label>
+                  <input type="email" id="email" name="email" class="form-control form-control-lg" required>
+                  <div class="invalid-feedback position-absolute start-0 top-100">Please enter a valid email address!
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="position-relative mb-4">
+                  <label for="phone" class="form-label fs-base">Téléphone</label>
+                  <input type="phone" id="phone" name="phone" class="form-control form-control-lg" required>
+                  <div class="invalid-feedback position-absolute start-0 top-100">Please enter a valid phone address!
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="position-relative mb-4">
+                  <label for="select-input" class="form-label">Specialite</label>
+                  <select class="form-select form-select-lg" name="specialite" id="select-input" disabled>
+                    <option value="">Choose option...</option>
+                    <option value="1">specialite 1</option>
+                    <option value="2">specialite 2</option>
+                    <option value="3">specialite 3</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 mb-4">
+                <label for="password" class="form-label fs-base">Mot de passe</label>
+                <div class="password-toggle">
+                  <input type="password" id="password" name="password" class="form-control form-control-lg" required>
+                  <label class="password-toggle-btn" aria-label="Show/hide password">
+                    <input class="password-toggle-check" type="checkbox">
+                    <span class="password-toggle-indicator"></span>
+                  </label>
+                  <div class="invalid-feedback position-absolute start-0 top-100">Please enter a password!</div>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary shadow-primary btn-lg w-100">S'inscrire</button>
+          </form>
+        </div>
+
+        <!-- Background -->
+        <div
+          class="position-absolute top-0 end-0 w-50 h-100 bg-position-center bg-repeat-0 bg-size-cover d-none d-xl-block"
+          style="background-image: url(img/account/signin-bg.jpg);"></div>
+    </section>
+
+    <script>
+      let client = document.getElementById("client-checkbox");
+      let doctor = document.getElementById("doctor-checkbox");
+      client.oninput = (e) => {
+        document.getElementById("select-input").setAttribute("disabled","true")
+        document.getElementById("select-input").value=""
+      }
+      doctor.oninput = (e) => {
+        document.getElementById("select-input").removeAttribute("disabled")
+      }
+    </script>
+    <%- include('../partials/footer') %>

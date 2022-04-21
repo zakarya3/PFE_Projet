@@ -1,0 +1,80 @@
+<%- include('../../partials/header') %>
+<%- include('../../partials/navbar') %> 
+<section class="container pt-5">
+    <div class="row">
+
+
+      <!-- Sidebar (User info + Account menu) -->
+      <aside class="col-lg-3 col-md-4 border-end pb-5 mt-n5">
+        <div class="position-sticky top-0">
+          <div class="text-center pt-5">
+            <div class="d-table position-relative mx-auto mt-2 mt-lg-4 pt-5 mb-3">
+              <img src="img/avatar/18.jpg" class="d-block rounded-circle" width="120" alt="John Doe">
+              <button type="button" class="btn btn-icon btn-light bg-white btn-sm border rounded-circle shadow-sm position-absolute bottom-0 end-0 mt-4" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Change picture">
+                <i class="bx bx-refresh"></i>
+              </button>
+            </div>
+            <h2 class="h5 mb-1">John Doe</h2>
+            <p class="mb-3 pb-3">jonny@email.com</p>
+            <button type="button" class="btn btn-secondary w-100 d-md-none mt-n2 mb-3" data-bs-toggle="collapse" data-bs-target="#account-menu">
+              <i class="bx bxs-user-detail fs-xl me-2"></i>
+              Account menu
+              <i class="bx bx-chevron-down fs-lg ms-1"></i>
+            </button>
+            <div id="account-menu" class="list-group list-group-flush collapse d-md-block">
+              <a href="/account" class="list-group-item list-group-item-action d-flex align-items-center">
+                <i class="bx bx-cog fs-xl opacity-60 me-2"></i>
+                Détails du compte
+              </a>
+              <a href="/request" class="list-group-item list-group-item-action d-flex align-items-center active">
+                <i class="bx bx-bell fs-xl opacity-60 me-2"></i>
+                Les demandes
+              </a>
+              <a href="" class="list-group-item list-group-item-action d-flex align-items-center">
+                <i class="bx bx-log-out fs-xl opacity-60 me-2"></i>
+                Se déconnecter
+              </a>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+
+      <!-- Account details -->
+      <div class="col-md-8 offset-lg-1 pb-5 mb-2 mb-lg-4 pt-md-5 mt-n3 mt-md-0">
+        <div class="ps-md-3 ps-lg-0 mt-md-2 py-md-4">
+            <h1 class="h2 pt-xl-1 pb-3">Demandes de réservation</h1>
+
+            <!-- Basic info -->
+            <h2 class="h5 text-primary mb-4">Informations des clients</h2>
+            <div class="table-responsive">
+                <table class="table">
+                <thead>
+                    <tr>
+                    <th>Date</th>
+                    <th>Nom et prénom</th>
+                    <th>Téléphone</th>
+                    <th>Adresse E-mail</th>
+                    <th>Message</th>
+                    <th></th>
+                    <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">12-05-2022</th>
+                        <td>Zakarya aanni</td>
+                        <td>+21212345678</td>
+                        <td>zakaria.aanni@gmail.com</td>
+                        <td>Salut ça va ?!!!!</td>
+                        <td><button type="button" class="btn btn-primary">Valider</button></td>
+                        <td><button type="button" class="btn btn-danger">Annuler</button></td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<%- include('../../partials/footer') %> 
