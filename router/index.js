@@ -41,8 +41,33 @@ router.get("/user-account",
   ensureAuthenticated,
   ensureRole("Client"),
   (req, res) => {
-    res.render("pages/users/account");
+  
+    const id = req.user.id
+    User.findById(id, function (err, user) { 
+      if (err) {
+        res.redirect('/')
+      }
+      if (!user) {
+        res.redirect('/rest')
+      }
+      else{
+        res.render("pages/users/account", {user});
+      }
+     })
+    
   }
+);
+router.post("/user-account",
+ensureAuthenticated,
+ensureRole("Client"),
+async (req, res) => {
+
+  const id = req.user.id
+  let user = await User.findOneAndUpdate(id, req.body, {
+    new: true
+  });
+  res.render("pages/users/account", {user});
+}
 );
 router.get("/doctor-account",
   ensureAuthenticated,

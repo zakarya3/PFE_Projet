@@ -41,8 +41,7 @@ app.use("/img", express.static(__dirname + "public/media"));
 
 //ejs setup
 
-app.set("views", "./views");
-app.set("view engine", "ejs");
+
 
 //BodyParser
 
@@ -57,6 +56,8 @@ app.use(
     saveUninitialized: true,
   })
 );
+app.set("views", "./views");
+app.set("view engine", "ejs");
 
 //routes
 

@@ -1,6 +1,7 @@
 <%- include('../../partials/header') %>
 <%- include('../../partials/navbar') %>
 <section class="container pt-5">
+  <% if ( typeof user !='undefined' ) { %>
     <div class="row">
 
 
@@ -14,8 +15,8 @@
                 <i class="bx bx-refresh"></i>
               </button>
             </div>
-            <h2 class="h5 mb-1">John Doe</h2>
-            <p class="mb-3 pb-3">jonny@email.com</p>
+            <h2 class="h5 mb-1"><%=user.name%></h2>
+            <p class="mb-3 pb-3"><%=user.email%></p>
             <button type="button" class="btn btn-secondary w-100 d-md-none mt-n2 mb-3" data-bs-toggle="collapse" data-bs-target="#account-menu">
               <i class="bx bxs-user-detail fs-xl me-2"></i>
               Account menu
@@ -47,38 +48,29 @@
 
           <!-- Basic info -->
           <h2 class="h5 text-primary mb-4">Informations de base</h2>
-          <form class="needs-validation border-bottom pb-3 pb-lg-4" novalidate>
+          <form class="needs-validation border-bottom pb-3 pb-lg-4" method="post" novalidate>
             <div class="row pb-2">
               <div class="col-sm-6 mb-4">
                 <label for="fn" class="form-label fs-base">Nom et prénom</label>
-                <input type="text" id="fn" class="form-control form-control-lg" value="John" required>
+                <input type="text" id="fn" name="name" class="form-control form-control-lg" value="<%=user.name%>" required>
                 <div class="invalid-feedback">Please enter your name!</div>
               </div>
               <div class="col-sm-6 mb-4">
                 <label for="email" class="form-label fs-base">Email</label>
-                <input type="email" id="email" class="form-control form-control-lg" value="jonny@email.com" required>
+                <input type="email" id="email" name="email" class="form-control form-control-lg" value="<%=user.email%>" required>
                 <div class="invalid-feedback">Please provide a valid email address!</div>
               </div>
               <div class="col-sm-6 mb-4">
                 <label for="phone" class="form-label fs-base">Téléphone</label>
-                <input type="text" id="phone" class="form-control form-control-lg" data-format="custom" data-delimiter="-" data-blocks="2 3 4" data-numeral="9" placeholder="00-000-0000">
-              </div>
-              <div class="col-sm-6 mb-4">
-                <label for="select-input" class="form-label">Select</label>
-                <select class="form-select" id="select-input">
-                  <option>Choose option...</option>
-                  <option>Option item 1</option>
-                  <option>Option item 2</option>
-                  <option>Option item 3</option>
-                </select>
+                <input type="text" id="phone" name="phone" value="<%=user.phone%>" class="form-control form-control-lg" data-format="custom" data-delimiter="-" data-blocks="2 3 4" data-numeral="9" placeholder="00-000-0000">
               </div>
               <div class="col-sm-6 mb-4">
                 <label for="text-input" class="form-label">Adresse</label>
-                <input class="form-control" type="text" id="text-input" value="">
+                <input class="form-control" name="address" type="text" id="text-input" value="">
               </div>
               <div class="col-sm-6 mb-4">
                 <label for="text-input" class="form-label">Mot de passe</label>
-                <input class="form-control" type="text" id="text-input" value="hjkf5346">
+                <input class="form-control" name="password" type="text" id="text-input" value="<%=user.password%>">
               </div>
             </div>
             <div class="d-flex mb-3">
@@ -92,6 +84,7 @@
         </div>
       </div>
     </div>
+    <% } %>
 </section>
 
 <%- include('../../partials/footer') %> 
