@@ -1,90 +1,164 @@
-<%- include('../../partials/header') %>
-<%- include('../../partials/navbar') %>
+<%- include('../../partials/header') %> <%- include('../../partials/navbar') %>
 <section class="container pt-5">
   <% if ( typeof user !='undefined' ) { %>
-    <div class="row">
-
-
-      <!-- Sidebar (User info + Account menu) -->
-      <aside class="col-lg-3 col-md-4 border-end pb-5 mt-n5">
-        <div class="position-sticky top-0">
-          <div class="text-center pt-5">
-            <div class="d-table position-relative mx-auto mt-2 mt-lg-4 pt-5 mb-3">
-              <img src="img/avatar/18.jpg" class="d-block rounded-circle" width="120" alt="John Doe">
-              <button type="button" class="btn btn-icon btn-light bg-white btn-sm border rounded-circle shadow-sm position-absolute bottom-0 end-0 mt-4" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Change picture">
-                <i class="bx bx-refresh"></i>
-              </button>
-            </div>
-            <h2 class="h5 mb-1"><%=user.name%></h2>
-            <p class="mb-3 pb-3"><%=user.email%></p>
-            <button type="button" class="btn btn-secondary w-100 d-md-none mt-n2 mb-3" data-bs-toggle="collapse" data-bs-target="#account-menu">
-              <i class="bx bxs-user-detail fs-xl me-2"></i>
-              Account menu
-              <i class="bx bx-chevron-down fs-lg ms-1"></i>
+  <div class="row">
+    <!-- Sidebar (User info + Account menu) -->
+    <aside class="col-lg-3 col-md-4 border-end pb-5 mt-n5">
+      <div class="position-sticky top-0">
+        <div class="text-center pt-5">
+          <div class="d-table position-relative mx-auto mt-2 mt-lg-4 pt-5 mb-3">
+            <img
+              src="img/avatar/18.jpg"
+              class="d-block rounded-circle"
+              width="120"
+              alt="John Doe"
+            />
+            <button
+              type="button"
+              class="btn btn-icon btn-light bg-white btn-sm border rounded-circle shadow-sm position-absolute bottom-0 end-0 mt-4"
+              data-bs-toggle="tooltip"
+              data-bs-placement="bottom"
+              title="Change picture"
+            >
+              <i class="bx bx-refresh"></i>
             </button>
-            <div id="account-menu" class="list-group list-group-flush collapse d-md-block">
-              <a href="/account" class="list-group-item list-group-item-action d-flex align-items-center active">
-                <i class="bx bx-cog fs-xl opacity-60 me-2"></i>
-                Détails du compte
-              </a>
-              <a href="/rdv" class="list-group-item list-group-item-action d-flex align-items-center">
-                <i class="bx bx-bell fs-xl opacity-60 me-2"></i>
-                Mes rendez-vous
-              </a>
-              <a href="/logout" class="list-group-item list-group-item-action d-flex align-items-center">
-                <i class="bx bx-log-out fs-xl opacity-60 me-2"></i>
-                Se déconnecter
-              </a>
-            </div>
+          </div>
+          <h2 class="h5 mb-1"><%=user.name%></h2>
+          <p class="mb-3 pb-3"><%=user.email%></p>
+          <button
+            type="button"
+            class="btn btn-secondary w-100 d-md-none mt-n2 mb-3"
+            data-bs-toggle="collapse"
+            data-bs-target="#account-menu"
+          >
+            <i class="bx bxs-user-detail fs-xl me-2"></i>
+            Account menu
+            <i class="bx bx-chevron-down fs-lg ms-1"></i>
+          </button>
+          <div
+            id="account-menu"
+            class="list-group list-group-flush collapse d-md-block"
+          >
+            <a
+              href="/account"
+              class="list-group-item list-group-item-action d-flex align-items-center active"
+            >
+              <i class="bx bx-cog fs-xl opacity-60 me-2"></i>
+              Détails du compte
+            </a>
+            <a
+              href="/rdv"
+              class="list-group-item list-group-item-action d-flex align-items-center"
+            >
+              <i class="bx bx-bell fs-xl opacity-60 me-2"></i>
+              Mes rendez-vous
+            </a>
+            <a
+              href="/logout"
+              class="list-group-item list-group-item-action d-flex align-items-center"
+            >
+              <i class="bx bx-log-out fs-xl opacity-60 me-2"></i>
+              Se déconnecter
+            </a>
           </div>
         </div>
-      </aside>
+      </div>
+    </aside>
 
+    <!-- Account details -->
+    <div class="col-md-8 offset-lg-1 pb-5 mb-2 mb-lg-4 pt-md-5 mt-n3 mt-md-0">
+      <div class="ps-md-3 ps-lg-0 mt-md-2 py-md-4">
+        <h1 class="h2 pt-xl-1 pb-3">Détails du compte</h1>
 
-      <!-- Account details -->
-      <div class="col-md-8 offset-lg-1 pb-5 mb-2 mb-lg-4 pt-md-5 mt-n3 mt-md-0">
-        <div class="ps-md-3 ps-lg-0 mt-md-2 py-md-4">
-          <h1 class="h2 pt-xl-1 pb-3">Détails du compte</h1>
-
-          <!-- Basic info -->
-          <h2 class="h5 text-primary mb-4">Informations de base</h2>
-          <form class="needs-validation border-bottom pb-3 pb-lg-4" method="post" novalidate>
-            <div class="row pb-2">
-              <div class="col-sm-6 mb-4">
-                <label for="fn" class="form-label fs-base">Nom et prénom</label>
-                <input type="text" id="fn" name="doctor-name" class="form-control form-control-lg" value="<%=user.name%>" required>
-                <div class="invalid-feedback">Please enter your name!</div>
-              </div>
-              <div class="col-sm-6 mb-4">
-                <label for="email" class="form-label fs-base">Email</label>
-                <input type="email" id="email" name="doctor-email" class="form-control form-control-lg" value="<%=user.email%>" required>
-                <div class="invalid-feedback">Please provide a valid email address!</div>
-              </div>
-              <div class="col-sm-6 mb-4">
-                <label for="phone" class="form-label fs-base">Téléphone</label>
-                <input type="text" id="phone" name="doctor-phone" value="<%=user.phone%>" class="form-control form-control-lg" data-format="custom" data-delimiter="-" data-blocks="2 3 4" data-numeral="9" placeholder="00-000-0000">
-              </div>
-              <div class="col-sm-6 mb-4">
-                <label for="text-input" class="form-label">Adresse</label>
-                <input class="form-control" name="doctor-address" type="text" id="text-input" value="">
-              </div>
-              <div class="col-sm-6 mb-4">
-                <label for="text-input" class="form-label">Mot de passe</label>
-                <input class="form-control" name="doctor-password" type="text" id="text-input" value="<%=user.password%>">
-              </div>
+        <!-- Basic info -->
+        <h2 class="h5 text-primary mb-4">Informations de base</h2>
+        <form
+          class="needs-validation border-bottom pb-3 pb-lg-4"
+          method="post"
+          novalidate
+        >
+          <div class="row pb-2">
+            <div class="col-sm-6 mb-4">
+              <label for="fn" class="form-label fs-base">Nom et prénom</label>
+              <input
+                type="text"
+                id="fn"
+                name="name"
+                class="form-control form-control-lg"
+                value="<%=user.name%>"
+                required
+              />
             </div>
-            <div class="d-flex mb-3">
-              <button type="submit" class="btn btn-primary">Sauvegarder</button>
+            <div class="col-sm-6 mb-4">
+              <label for="email" class="form-label fs-base">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-control form-control-lg"
+                value="<%=user.email%>"
+                required
+              />
+           
             </div>
-          </form>
+            <div class="col-sm-6 mb-4">
+              <label for="phone" class="form-label fs-base">Téléphone</label>
+              <input
+                type="text"
+                id="phone"
+                name="phone"
+                value="<%=user.phone%>"
+                class="form-control form-control-lg"
+                data-format="custom"
+                data-delimiter="-"
+                data-blocks="2 3 4"
+                data-numeral="9"
+                placeholder="00-000-0000"
+              />
+            </div>
+            <div class="col-sm-6 mb-4">
+              <label for="text-input" class="form-label">Adresse</label>
+              <input
+                class="form-control"
+                name="address"
+                type="text"
+                id="text-input"
+                value="<%=user.address%>"
+              />
+            </div>
+            <div class="col-sm-6 mb-4">
+              <label for="text-input" class="form-label">Mot de passe</label>
+              <input
+                class="form-control"
+                name="password"
+                type="text"
+                id="text-input"
+                value="<%=user.password%>"
+              />
+            </div>
+            <div class="col-sm-6 mb-4">
+              <label for="text-input" class="form-label">specialite</label>
+              <input
+                class="form-control"
+                name="specialite"
+                type="text"
+                id="text-input"
+                value="<%=user.specialite%>"
+              />
+            </div>
+          </div>
+          <div class="d-flex mb-3">
+            <button type="submit" class="btn btn-primary">Sauvegarder</button>
+          </div>
+        </form>
 
-          <!-- Delete account -->
-          <h2 class="h5 text-primary pt-1 pt-lg-3 mt-4">Supprimer le compte</h2>
-          <button type="button" class="btn btn-danger">Delete</button>
-        </div>
+        <!-- Delete account -->
+        <h2 class="h5 text-primary pt-1 pt-lg-3 mt-4">Supprimer le compte</h2>
+        <button type="button" class="btn btn-danger">Delete</button>
       </div>
     </div>
-    <% } %>
+  </div>
+  <% } %>
 </section>
 
-<%- include('../../partials/footer') %> 
+<%- include('../../partials/footer') %>

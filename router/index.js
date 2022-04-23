@@ -1,3 +1,4 @@
+const { Mongoose } = require("mongoose");
 const passport = require("passport");
 const { ensureAuthenticated, ensureRole } = require("../config/auth");
 const User = require("../models/User");
@@ -62,15 +63,11 @@ router.post("/user-account",
 ensureAuthenticated,
 ensureRole("Client"),
 async (req, res) => {
-
-  const id = req.user.id
-  var query = {_id: req.user.id};
-  
-  User.findOneAndUpdate(query, req.body, {upsert: true}, function(err, doc) {
-      if (err) return res.send(500, {error: err});
-      return res.send('Succesfully saved.'+doc);
-  });
-  
+  console.log(req.body.address);
+  const user = await User.findOneAndUpdate(
+    { _id: req.user.id },req.body,{ new: true }
+  );
+  res.render("pages/users/account",{user})
 }
 );
 router.get("/doctor-account",
@@ -97,13 +94,11 @@ router.post("/doctor-account",
   ensureAuthenticated,
   ensureRole("Doctor"),
   async (req, res) => {
-    const id = req.user.id
-    var query = {_id: req.user.id};
-    
-    User.findOneAndUpdate(query, req.body, {upsert: true}, function(err, doc) {
-        if (err) return res.send(500, {error: err});
-        return res.send('Succesfully saved.'+doc);
-    });
+    console.log(req.body.address);
+    const user = await User.findOneAndUpdate(
+      { _id: req.user.id },req.body,{ new: true }
+    );
+    res.render("pages/users/account",{user})
   }
 );
 router.get("/login", (req, res) => {

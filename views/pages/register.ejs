@@ -48,10 +48,17 @@
                   <label for="select-input" class="form-label">Specialite</label>
                   <select class="form-select form-select-lg" name="specialite" id="select-input" disabled>
                     <option value="">Choose option...</option>
-                    <option value="1">specialite 1</option>
-                    <option value="2">specialite 2</option>
-                    <option value="3">specialite 3</option>
+                    <option value="specialite 1">specialite 1</option>
+                    <option value="specialite 2">specialite 2</option>
+                    <option value="specialite 3">specialite 3</option>
                   </select>
+                </div>
+              </div>
+              <div class="col-12 mb-4">
+                <label for="Adress" class="form-label fs-base">Adresse</label>
+                <div class="Adress-toggle">
+                  <input type="Adress" id="Adress" name="address" class="form-control form-control-lg" required>
+                  <div class="invalid-feedback position-absolute start-0 top-100">Please enter a Adress!</div>
                 </div>
               </div>
               <div class="col-12 mb-4">
@@ -81,10 +88,13 @@
       let doctor = document.getElementById("doctor-checkbox");
       client.oninput = (e) => {
         document.getElementById("select-input").setAttribute("disabled","true")
+        document.getElementById("select-input").removeAttribute("required")
         document.getElementById("select-input").value=""
       }
       doctor.oninput = (e) => {
         document.getElementById("select-input").removeAttribute("disabled")
+        document.getElementById("select-input").setAttribute("required","true")
+
       }
     </script>
     <%- include('../partials/footer') %>
