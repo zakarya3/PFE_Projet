@@ -10,13 +10,14 @@ router.get("/register", (req, res) => {
 });
 router.post("/register", (req, res) => {
   const { body } = req;
-  const { name, email, phone, specialite, password } = body;
+  const { name, email, phone, address, specialite, password } = body;
   console.log(specialite);
   const newUser = new User({
     name,
     email,
     phone,
     specialite,
+    address,
     password,
     Role: specialite == undefined ? "Client" : "Doctor",
   });
@@ -63,17 +64,46 @@ ensureRole("Client"),
 async (req, res) => {
 
   const id = req.user.id
-  let user = await User.findOneAndUpdate(id, req.body, {
-    new: true
+  var query = {_id: req.user.id};
+  
+  User.findOneAndUpdate(query, req.body, {upsert: true}, function(err, doc) {
+      if (err) return res.send(500, {error: err});
+      return res.send('Succesfully saved.'+doc);
   });
-  res.render("pages/users/account", {user});
+  
 }
 );
 router.get("/doctor-account",
   ensureAuthenticated,
   ensureRole("Doctor"),
   (req, res) => {
-    res.render("pages/doctor/account");
+  
+    const id = req.user.id
+    User.findById(id, function (err, user) { 
+      if (err) {
+        res.redirect('/')
+      }
+      if (!user) {
+        res.redirect('/rest')
+      }
+      else{
+        res.render("pages/doctor/account", {user});
+      }
+     })
+    
+  }
+);
+router.post("/doctor-account",
+  ensureAuthenticated,
+  ensureRole("Doctor"),
+  async (req, res) => {
+    const id = req.user.id
+    var query = {_id: req.user.id};
+    
+    User.findOneAndUpdate(query, req.body, {upsert: true}, function(err, doc) {
+        if (err) return res.send(500, {error: err});
+        return res.send('Succesfully saved.'+doc);
+    });
   }
 );
 router.get("/login", (req, res) => {
