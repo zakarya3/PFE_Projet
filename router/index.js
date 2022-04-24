@@ -39,6 +39,43 @@ router.post("/register", (req, res) => {
       res.redirect("/register");
     });
 });
+
+//Admin
+router.get("/admin-account",
+ensureAuthenticated,
+ensureRole("Admin"),
+(req, res) => {
+
+  const id = req.user.id
+  User.findById(id, function (err, user) { 
+    if (err) {
+      res.redirect('/')
+    }
+    if (!user) {
+      res.redirect('/rest')
+    }
+    else{
+      res.render("pages/admin/account", {user});
+    }
+   })
+  
+}
+);
+
+router.get("/users-list", function (req, res, next) { 
+  User.find((err, docs) => {
+    if (!err) {
+      res.render("pages/admin/users",{
+        data: docs
+      })
+    } else {
+      console.log("falid"+err);
+    }
+  });
+ });
+
+
+//User
 router.get("/user-account",
   ensureAuthenticated,
   ensureRole("Client"),
@@ -70,6 +107,16 @@ async (req, res) => {
   res.render("pages/users/account",{user})
 }
 );
+router.get("/user/delete/:id", (req,res) =>{
+  User.findByIdAndRemove(req.params.id, (err, doc) =>{
+    if (!err) {
+      res.redirect("../../login")
+    }
+  })
+});
+
+
+//Doctor
 router.get("/doctor-account",
   ensureAuthenticated,
   ensureRole("Doctor"),
@@ -101,10 +148,20 @@ router.post("/doctor-account",
     res.render("pages/users/account",{user})
   }
 );
+router.get("/doctor/delete/:id", (req,res) =>{
+  User.findByIdAndRemove(req.params.id, (err, doc) =>{
+    if (!err) {
+      res.redirect("../../login")
+    }
+  })
+});
 router.get("/login", (req, res) => {
   if (req.user) {
     if (req.user.Role == "Doctor") {
       res.redirect("/doctor-account");
+    }
+    if (req.user.Role == "Admin") {
+      res.redirect("/admin-account");
     } else {
       res.redirect("/user-account");
     }
@@ -122,6 +179,9 @@ router.post("/login",
   function (req, res, next) {
     if (req.user.Role == "Doctor") {
       res.redirect("/doctor-account");
+    } 
+    if (req.user.Role == "Admin") {
+      res.redirect("/admin-account");
     } else {
       res.redirect("/user-account");
     }

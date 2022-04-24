@@ -1,4 +1,4 @@
-<%- include('../../partials/header') %> <%- include('../../partials/navbar') %>
+<%- include('../../partials/header') %> 
 <section class="container pt-5">
   <% if ( typeof user !='undefined' ) { %>
   <div class="row">
@@ -40,18 +40,18 @@
             class="list-group list-group-flush collapse d-md-block"
           >
             <a
-              href="/account"
+              href="/admin-account"
               class="list-group-item list-group-item-action d-flex align-items-center active"
             >
               <i class="bx bx-cog fs-xl opacity-60 me-2"></i>
               Détails du compte
             </a>
             <a
-              href="/rdv"
+              href="/users-list"
               class="list-group-item list-group-item-action d-flex align-items-center"
             >
-              <i class="bx bx-bell fs-xl opacity-60 me-2"></i>
-              Mes rendez-vous
+              <i class="bx bx-user fs-xl opacity-60 me-2"></i>
+              Utilisateurs
             </a>
             <a
               href="/logout"
