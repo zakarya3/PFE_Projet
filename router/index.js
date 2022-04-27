@@ -220,11 +220,12 @@ router.get("/login", (req, res) => {
     if (req.user.Role == "Doctor") {
       res.redirect("/doctor-account");
     }
-    if (req.user.Role == "Admin") {
-      res.redirect("/admin-account");
-    } else {
+    if (req.user.Role == "Client")  {
       res.redirect("/user-account");
     }
+    if (req.user.Role == "Admin") {
+      res.redirect("/admin-account");
+    } 
   } else {
     res.render("pages/login");
   }
@@ -240,10 +241,11 @@ router.post("/login",
     if (req.user.Role == "Doctor") {
       res.redirect("/doctor-account");
     } 
+    if (req.user.Role == "Client")  {
+      res.redirect("/user-account");
+    }
     if (req.user.Role == "Admin") {
       res.redirect("/admin-account");
-    } else {
-      res.redirect("/user-account");
     }
   }
 );
