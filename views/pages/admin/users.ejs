@@ -52,6 +52,13 @@
               Utilisateurs
             </a>
             <a
+            href="/specialites"
+            class="list-group-item list-group-item-action d-flex align-items-center"
+          >
+            <i class="bx bx-category-alt fs-xl opacity-60 me-2"></i>
+            Specialites
+          </a>
+            <a
               href="/logout"
               class="list-group-item list-group-item-action d-flex align-items-center"
             >
@@ -74,13 +81,12 @@
                 <table class="table">
                 <thead>
                     <tr>
-                    <th>ID</th>
-                    <th>Nom et prénom</th>
-                    <th>Téléphone</th>
-                    <th>Adresse E-mail</th>
-                    <th>Specialite</th>
-                    <th>Adresse</th>
-                    <th>Client/Docteur</th>
+                      <th>Client/Docteur</th>
+                      <th>Nom et prénom</th>
+                      <th>Téléphone</th>
+                      <th>Adresse E-mail</th>
+                      <th>Specialite</th>
+                      <th>Adresse</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -88,13 +94,12 @@
  
                         for(var i = 0; i< data.length; i++) {%>  
                         <tr>
-                          <td><%= data[i].id%></td>
+                          <td><%= data[i].Role%></td>
                           <td><%= data[i].name%></td>
                           <td><%= data[i].phone%></td>
                           <td><%= data[i].email%></td>
                           <td><%= data[i].specialite%></td>
                           <td><%= data[i].address%></td>
-                          <td><%= data[i].Role%></td>
                         </tr>
                         <% }
                                  

@@ -2,12 +2,21 @@ const { Mongoose } = require("mongoose");
 const passport = require("passport");
 const { ensureAuthenticated, ensureRole } = require("../config/auth");
 const User = require("../models/User");
+const Specialitie = require('../models/Specialitie');
 const router = require("express").Router();
 router.get("/", (req, res) => {
   res.render("pages/index");
 });
-router.get("/register", (req, res) => {
-  res.render("pages/register");
+router.get("/register", function (req, res, next) {
+  Specialitie.find((err, docs) => {
+    if (!err) {
+      res.render("pages/register",{
+        data: docs
+      })
+    } else {
+      console.log("falid"+err);
+    }
+  });
 });
 router.post("/register", (req, res) => {
   const { body } = req;
@@ -155,6 +164,57 @@ router.get("/doctor/delete/:id", (req,res) =>{
     }
   })
 });
+
+
+
+//Specialties
+router.get("/specialites", function (req, res, next) { 
+  Specialitie.find((err, docs) => {
+    if (!err) {
+      res.render("pages/admin/specialities",{
+        data: docs
+      })
+    } else {
+      console.log("falid"+err);
+    }
+  });
+ });
+
+ router.post("/specialites", (req, res) => {
+  const { body } = req;
+  const { specialitie } = body;
+  const newSpecialitie = new Specialitie({
+    specialitie,
+  });
+  newSpecialitie
+    .save()
+    .then((result) => {
+      if (result != null) {
+        req.flash(
+          "success_msg",
+          specialitie + " bien enregistré"
+        );
+        res.redirect("/specialites")
+      } else {
+        console.log("vide");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+router.get("/delete/:id", (req,res) =>{
+  Specialitie.findByIdAndRemove(req.params.id, (err, doc) =>{
+    if (!err) {
+      res.redirect("../specialites")
+    }
+  })
+});
+
+
+
+
 router.get("/login", (req, res) => {
   if (req.user) {
     if (req.user.Role == "Doctor") {
