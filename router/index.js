@@ -20,11 +20,12 @@ router.get("/register", function (req, res, next) {
 });
 router.post("/register", (req, res) => {
   const { body } = req;
-  const { name, email, phone, address, specialite, password } = body;
+  const { name, email, doctor_id, phone, address, specialite, password} = body;
   console.log(specialite);
   const newUser = new User({
     name,
     email,
+    doctor_id,
     phone,
     specialite,
     address,
@@ -83,6 +84,53 @@ router.get("/users-list", function (req, res, next) {
   });
  });
 
+ router.get("/add-doctors",
+ensureAuthenticated,
+ensureRole("Admin"),
+(req, res) => {
+  Specialitie.find((err, docs) => {
+    if (!err) {
+      res.render("pages/admin/add-doctors",{
+        data: docs
+      })
+    } else {
+      console.log("falid"+err);
+    }
+  }); 
+}
+);
+
+ router.post("/add-doctors", (req, res) => {
+  const { body } = req;
+  const { name, email, doctor_id, phone, address, specialite, password} = body;
+  console.log(specialite);
+  const newUser = new User({
+    name,
+    email,
+    doctor_id,
+    phone,
+    specialite,
+    address,
+    password,
+    Role: "Doctor",
+  });
+  newUser
+    .save()
+    .then((result) => {
+      if (result != null) {
+        req.flash(
+          "success_msg",
+          email + " bien enregistré. Connectez-vous!"
+        );
+        res.redirect("/users-list");
+      } else {
+        res.redirect("/admin-account");
+      }
+    })
+    .catch((err) => {
+      res.redirect("/admin-account");
+    });
+});
 
 //User
 router.get("/user-account",
@@ -157,6 +205,29 @@ router.post("/doctor-account",
     res.render("pages/users/account",{user})
   }
 );
+router.get("/accept/:id", (req, res) => {
+  User.findOneAndUpdate( {_id: req.params.id}, {"$set":{"Accepte":true}}, (err, doc) =>{
+    if (!err) {
+      console.log("done");
+      res.redirect("/users-list");
+    } else {
+      console.log(err);
+    }
+  })
+});
+router.get("/block/:id", (req, res) => {
+  User.findOneAndUpdate( {_id: req.params.id}, {"$set":{"Accepte":false}}, (err, doc) =>{
+    if (!err) {
+      console.log("done");
+      res.redirect("/users-list");
+    } else {
+      console.log(err);
+    }
+  })
+});
+
+
+
 router.get("/doctor/delete/:id", (req,res) =>{
   User.findByIdAndRemove(req.params.id, (err, doc) =>{
     if (!err) {
@@ -218,7 +289,11 @@ router.get("/delete/:id", (req,res) =>{
 router.get("/login", (req, res) => {
   if (req.user) {
     if (req.user.Role == "Doctor") {
-      res.redirect("/doctor-account");
+      if (req.user.Accepte == true) {
+        res.redirect("/doctor-account");
+      } else {
+        res.render("pages/login");
+      }
     }
     if (req.user.Role == "Client")  {
       res.redirect("/user-account");
@@ -239,7 +314,11 @@ router.post("/login",
   }),
   function (req, res, next) {
     if (req.user.Role == "Doctor") {
-      res.redirect("/doctor-account");
+      if (req.user.Accepte == true) {
+        res.redirect("/doctor-account");
+      } else {
+        res.render("pages/login");
+      }
     } 
     if (req.user.Role == "Client")  {
       res.redirect("/user-account");
@@ -255,4 +334,16 @@ router.get("/logout", (req, res) => {
   res.redirect("/login");
 });
 
+
+router.get("/doctors", function (req, res, next) { 
+  User.find((err, docs) => {
+    if (!err) {
+      res.render("pages/doctors",{
+        data: docs
+      })
+    } else {
+      console.log("falid"+err);
+    }
+  });
+ });
 module.exports = router;

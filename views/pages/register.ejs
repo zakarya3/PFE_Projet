@@ -70,6 +70,13 @@
                 </div>
               </div>
               <div class="col-12 mb-4">
+                <label for="Adress" class="form-label fs-base">Code Doctor</label>
+                <div class="Adress-toggle">
+                  <input type="text" name="doctor_id" class="form-control form-control-lg" id="id-input" disabled>
+                  <div class="invalid-feedback position-absolute start-0 top-100">Please enter a id!</div>
+                </div>
+              </div>
+              <div class="col-12 mb-4">
                 <label for="Adress" class="form-label fs-base">Adresse</label>
                 <div class="Adress-toggle">
                   <input type="Adress" id="Adress" name="address" class="form-control form-control-lg" required>
@@ -105,10 +112,17 @@
         document.getElementById("select-input").setAttribute("disabled","true")
         document.getElementById("select-input").removeAttribute("required")
         document.getElementById("select-input").value=""
+
+        document.getElementById("id-input").setAttribute("disabled","true")
+        document.getElementById("id-input").removeAttribute("required")
+        document.getElementById("id-input").value=""
       }
       doctor.oninput = (e) => {
         document.getElementById("select-input").removeAttribute("disabled")
         document.getElementById("select-input").setAttribute("required","true")
+
+        document.getElementById("id-input").removeAttribute("disabled")
+        document.getElementById("id-input").setAttribute("required","true")
 
       }
     </script>

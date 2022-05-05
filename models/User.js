@@ -8,6 +8,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  doctor_id: {
+    type: String,
+    required: false,
+  },
   password: {
     type: String,
     required: true,
