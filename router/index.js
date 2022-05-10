@@ -3,6 +3,7 @@ const passport = require("passport");
 const { ensureAuthenticated, ensureRole } = require("../config/auth");
 const User = require("../models/User");
 const Specialitie = require('../models/Specialitie');
+const Rdv = require('../models/Rdv');
 const router = require("express").Router();
 router.get("/", (req, res) => {
   res.render("pages/index");
@@ -72,7 +73,10 @@ ensureRole("Admin"),
 }
 );
 
-router.get("/users-list", function (req, res, next) { 
+router.get("/users-list",
+ensureAuthenticated,
+ensureRole("Admin"),
+function (req, res, next) { 
   User.find((err, docs) => {
     if (!err) {
       res.render("pages/admin/users",{
@@ -153,6 +157,8 @@ router.get("/user-account",
     
   }
 );
+
+
 router.post("/user-account",
 ensureAuthenticated,
 ensureRole("Client"),
@@ -172,6 +178,68 @@ router.get("/user/delete/:id", (req,res) =>{
   })
 });
 
+router.get("/reservation",
+  ensureAuthenticated,
+  ensureRole("Client"),
+  (req, res) => {
+    User.find((err, docs) => {
+      if (!err) {
+        res.render("pages/reservation",{
+          data: docs,
+          name: req.user.name,
+          id: req.user.id
+        })
+      } else {
+        console.log("falid"+err);
+      }
+    }); 
+    
+  }
+);
+router.post("/reservation", (req, res) => {
+  const { body } = req;
+  const { idpatient, date, medecin, message} = body;
+  const newRdv = new Rdv({
+    idpatient,
+    date,
+    medecin,
+    message,
+  });
+  newRdv
+    .save()
+    .then((result) => {
+      if (result != null) {
+        req.flash(
+          "success_msg",
+          email + " bien enregistré. Connectez-vous!"
+        );
+        res.redirect("/users-list");
+      } else {
+        res.redirect("/admin-account");
+      }
+    })
+    .catch((err) => {
+      res.redirect("/admin-account");
+    });
+});
+
+router.get("/rdv",
+  ensureAuthenticated,
+  ensureRole("Client"),
+  (req, res) => {
+    Rdv.find((err, docs) => {
+      if (!err) {
+        res.render("pages/users/rdv",{
+          data: docs,
+          user: req.user
+        })
+      } else {
+        console.log("falid"+err);
+      }
+    }); 
+    
+  }
+);
 
 //Doctor
 router.get("/doctor-account",
@@ -227,6 +295,25 @@ router.get("/block/:id", (req, res) => {
 });
 
 
+router.get("/request",
+  ensureAuthenticated,
+  ensureRole("Doctor"),
+  (req, res) => {
+    Rdv.find((err, docs) => {
+      if (!err) {
+        res.render("pages/doctor/request",{
+          data: docs,
+          user: req.user
+        })
+      } else {
+        console.log("falid"+err);
+      }
+    }); 
+    
+  }
+);
+
+
 
 router.get("/doctor/delete/:id", (req,res) =>{
   User.findByIdAndRemove(req.params.id, (err, doc) =>{
@@ -239,7 +326,10 @@ router.get("/doctor/delete/:id", (req,res) =>{
 
 
 //Specialties
-router.get("/specialites", function (req, res, next) { 
+router.get("/specialites",
+ensureAuthenticated,
+ensureRole("Admin"),
+function (req, res, next) { 
   Specialitie.find((err, docs) => {
     if (!err) {
       res.render("pages/admin/specialities",{

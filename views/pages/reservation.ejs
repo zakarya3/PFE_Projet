@@ -16,52 +16,39 @@
 
     <!-- Contact form -->
     <div class="bg-secondary rounded-3 py-5 px-3 px-sm-0 mb-xl-4">
-      <form class="needs-validation row justify-content-center py-lg-3 py-xl-4" novalidate>
+      <form class="needs-validation row justify-content-center py-lg-3 py-xl-4" method="post" novalidate>
         <div class="col-xl-8 col-lg-9 col-md-10 col-sm-11">
           <h2 class="h1 pb-lg-1 mb-4">Remplir le formulaire</h2>
+          <input type="hidden" value="<%=id%>" name="idpatient">
           <p class="fs-lg text-muted pb-lg-1 mb-4">Nous apprécions grandement votre confiance. Nos patients nous choisissent, nous et nos services, car ils savent que nous sommes les meilleurs. Nous offrons des soins de santé complets aux personnes ayant divers problèmes de santé.</p>
           <div class="row">
-            <div class="col-sm-6 mb-4">
-              <label for="name" class="form-label fs-base">Nom et prénom</label>
-              <input type="text" id="name" class="form-control form-control-lg" required>
-              <div class="invalid-feedback">Please enter your name!</div>
-            </div>
-            <div class="col-sm-6 mb-4">
-                <label for="phone" class="form-label fs-base">Téléphone</label>
-                <input type="text" id="phone" class="form-control form-control-lg" required>
-                <div class="invalid-feedback">Please enter your phone!</div>
-            </div>
-            <div class="col-sm-12 mb-4">
-              <label for="email" class="form-label fs-base">Adresse e-mail</label>
-              <input type="email" id="email" class="form-control form-control-lg" required>
-              <div class="invalid-feedback">Please provide a valid email address!</div>
-            </div>
-            <div class="col-sm-12 mb-4">
-              <label for="password" class="form-label fs-base">Saisir un mot de passe</label>
-              <input type="password" id="password" class="form-control form-control-lg" required>
-              <div class="invalid-feedback">Please provide a valid password!</div>
-            </div>
             <div class="col-sm-12 mb-4">
                 <label for="select-input" class="form-label">Selectionnez un docteur</label>
-                <select class="form-select" id="select-input">
+                <select class="form-select" name="medecin" id="select-input">
                   <option>Choose option...</option>
-                  <option>Option item 1</option>
-                  <option>Option item 2</option>
-                  <option>Option item 3</option>
+                  <% if(data.length){
+ 
+                    for(var i = 0; i< data.length; i++) {%> 
+                      <% if(data[i].Role == "Doctor"){ %>
+                        <option value="<%= data[i].name%>"><%= data[i].name%> / <%= data[i].specialite%></option>
+                      <%}%>  
+                    <%}%>
+
+                  <%}%>
                 </select>
             </div>
             <div class="col-sm-6 mb-4">
-              <label for="phone" class="form-label fs-base">Selectionnez la date de rendez-vous</label>
-              <input type="date" id="date" class="form-control form-control-lg" required>
+              <label for="date" class="form-label fs-base">Selectionnez la date et l'heure de rendez-vous</label>
+              <input type="datetime-local" id="date" name="date" class="form-control form-control-lg" required>
               <div class="invalid-feedback">Please enter your date!</div>
-          </div>
+            </div>
             <div class="col-12 mb-4">
               <label for="message" class="form-label fs-base">Message (Optionnel)</label>
-              <textarea id="message" class="form-control form-control-lg" rows="4" required></textarea>
+              <textarea id="message" name="message" class="form-control form-control-lg" rows="4"></textarea>
               <div class="invalid-feedback">Please write your message!</div>
             </div>
           </div>
-          <button type="submit" class="btn btn-primary btn-lg shadow-primary">Soumettre</button>  
+          <button type="submit" class="btn btn-primary btn-lg shadow-primary">Demander</button>  
         </div>
       </form>
     </div>

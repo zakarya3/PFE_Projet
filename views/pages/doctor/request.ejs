@@ -9,28 +9,56 @@
         <div class="position-sticky top-0">
           <div class="text-center pt-5">
             <div class="d-table position-relative mx-auto mt-2 mt-lg-4 pt-5 mb-3">
-              <img src="img/avatar/18.jpg" class="d-block rounded-circle" width="120" alt="John Doe">
-              <button type="button" class="btn btn-icon btn-light bg-white btn-sm border rounded-circle shadow-sm position-absolute bottom-0 end-0 mt-4" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Change picture">
+              <img
+                src="img/avatar/18.jpg"
+                class="d-block rounded-circle"
+                width="120"
+                alt="John Doe"
+              />
+              <button
+                type="button"
+                class="btn btn-icon btn-light bg-white btn-sm border rounded-circle shadow-sm position-absolute bottom-0 end-0 mt-4"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                title="Change picture"
+              >
                 <i class="bx bx-refresh"></i>
               </button>
             </div>
-            <h2 class="h5 mb-1">John Doe</h2>
-            <p class="mb-3 pb-3">jonny@email.com</p>
-            <button type="button" class="btn btn-secondary w-100 d-md-none mt-n2 mb-3" data-bs-toggle="collapse" data-bs-target="#account-menu">
+            <h2 class="h5 mb-1"><%=user.name%></h2>
+            <p class="mb-3 pb-3"><%=user.email%></p>
+            <button
+              type="button"
+              class="btn btn-secondary w-100 d-md-none mt-n2 mb-3"
+              data-bs-toggle="collapse"
+              data-bs-target="#account-menu"
+            >
               <i class="bx bxs-user-detail fs-xl me-2"></i>
               Account menu
               <i class="bx bx-chevron-down fs-lg ms-1"></i>
             </button>
-            <div id="account-menu" class="list-group list-group-flush collapse d-md-block">
-              <a href="/account" class="list-group-item list-group-item-action d-flex align-items-center">
+            <div
+              id="account-menu"
+              class="list-group list-group-flush collapse d-md-block"
+            >
+              <a
+                href="/account"
+                class="list-group-item list-group-item-action d-flex align-items-center "
+              >
                 <i class="bx bx-cog fs-xl opacity-60 me-2"></i>
                 Détails du compte
               </a>
-              <a href="/request" class="list-group-item list-group-item-action d-flex align-items-center active">
+              <a
+                href="/request"
+                class="list-group-item list-group-item-action d-flex align-items-center active"
+              >
                 <i class="bx bx-bell fs-xl opacity-60 me-2"></i>
-                Les demandes
+                Mes rendez-vous
               </a>
-              <a href="" class="list-group-item list-group-item-action d-flex align-items-center">
+              <a
+                href="/logout"
+                class="list-group-item list-group-item-action d-flex align-items-center"
+              >
                 <i class="bx bx-log-out fs-xl opacity-60 me-2"></i>
                 Se déconnecter
               </a>
@@ -51,25 +79,29 @@
                 <table class="table">
                 <thead>
                     <tr>
-                    <th>Date</th>
+                    <th>Date de réservation</th>
                     <th>Nom et prénom</th>
-                    <th>Téléphone</th>
-                    <th>Adresse E-mail</th>
-                    <th>Message</th>
-                    <th></th>
+                    <th>Date de rendez-vous</th>
                     <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">12-05-2022</th>
-                        <td>Zakarya aanni</td>
-                        <td>+21212345678</td>
-                        <td>zakaria.aanni@gmail.com</td>
-                        <td>Salut ça va ?!!!!</td>
-                        <td><button type="button" class="btn btn-primary">Valider</button></td>
-                        <td><button type="button" class="btn btn-danger">Annuler</button></td>
-                    </tr>
+                  <% if(data.length){ for(var i = 0; i< data.length; i++) {%>
+                    <% if(data[i].medecin == user.name){ %>
+                <tr>
+                    <th scope="row"><%= data[i].createdAt %> </th>
+                    <td><%= data[i].idpatient %></td>
+                    <td><%= data[i].date %></td>
+                    <% if(data[i].status == false){ %>
+                    <td><span class="badge bg-success">Confirmer</span></td>
+                    <% }else{ %>
+                      <td><span class="badge bg-danger">Refuser</span></td>
+                      <% } %>  
+                </tr>
+                <% } %>
+                <% } %>
+                <% } %>   
+                </tbody>
                 </tbody>
                 </table>
             </div>

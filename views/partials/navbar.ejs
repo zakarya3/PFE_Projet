@@ -32,16 +32,17 @@
                   <li class="nav-item">
                     <a href="/contact" class="nav-link">Contactez-nous</a>
                   </li>
-                  <li class="nav-item">
-                    <a href="/login" class="nav-link">Espace du docteur</a>
-                  </li>
                 </ul>
               </div>
               <div class="offcanvas-footer border-top">
                
                 <a href="/login" class="btn btn-primary w-100">
-                  <i class="bx bx-plus-medical fs-4 lh-1 me-1"></i>
-                  &nbsp;login
+                  <i class="bx bxs-user-account fs-4 lh-1 me-1"></i>
+                  &nbsp;<% if ( typeof name !='undefined' ) { %>
+                    <%=name%>
+                  <% }else{ %>
+                    Compte
+                    <% } %>  
                 </a>
               </div>      
             </div>
@@ -49,8 +50,12 @@
               <span class="navbar-toggler-icon"></span>
             </button>
             <a href="/login" class="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex">
-              <i class="bx bx-plus-medical fs-5 lh-1 me-1"></i>
-              &nbsp;login 
+              <i class="bx bxs-user-account fs-5 lh-1 me-1"></i>
+              &nbsp;<% if ( typeof name !='undefined' ) { %>
+                <%=name%>
+              <% }else{ %>
+                Compte
+                <% } %> 
             </a>
             
           </div>
