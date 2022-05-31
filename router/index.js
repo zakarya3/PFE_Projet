@@ -240,6 +240,13 @@ router.get("/rdv",
     
   }
 );
+router.get("/annuler/:id", (req,res) =>{
+  Rdv.findByIdAndRemove(req.params.id, (err, doc) =>{
+    if (!err) {
+      res.redirect("/rdv")
+    }
+  })
+});
 
 //Doctor
 router.get("/doctor-account",
@@ -288,6 +295,28 @@ router.get("/block/:id", (req, res) => {
     if (!err) {
       console.log("done");
       res.redirect("/users-list");
+    } else {
+      console.log(err);
+    }
+  })
+});
+
+
+router.get("/accepter/:id", (req, res) => {
+  Rdv.findOneAndUpdate( {_id: req.params.id}, {"$set":{"status":true}}, (err, doc) =>{
+    if (!err) {
+      console.log("done");
+      res.redirect("/request");
+    } else {
+      console.log(err);
+    }
+  })
+});
+router.get("/refuser/:id", (req, res) => {
+  Rdv.findOneAndUpdate( {_id: req.params.id}, {"$set":{"status":false}}, (err, doc) =>{
+    if (!err) {
+      console.log("done");
+      res.redirect("/request");
     } else {
       console.log(err);
     }

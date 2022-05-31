@@ -10,7 +10,7 @@
           <div class="text-center pt-5">
             <div class="d-table position-relative mx-auto mt-2 mt-lg-4 pt-5 mb-3">
               <img
-                src="img/avatar/18.jpg"
+                src="img/team/16.jpg"
                 class="d-block rounded-circle"
                 width="120"
                 alt="John Doe"
@@ -83,6 +83,7 @@
                     <th>Nom et prénom</th>
                     <th>Date de rendez-vous</th>
                     <th></th>
+                    <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -93,9 +94,10 @@
                     <td><%= data[i].idpatient %></td>
                     <td><%= data[i].date %></td>
                     <% if(data[i].status == false){ %>
-                    <td><span class="badge bg-success">Confirmer</span></td>
+                    <td><a type="submit" href="/accepter/<%= data[i].id %> " class="btn btn-success">Confirmer</a></td>
                     <% }else{ %>
-                      <td><span class="badge bg-danger">Refuser</span></td>
+                      <td><a type="submit" href="/refuser/<%= data[i].id %>" class="btn btn-danger">Refuser</a></td>
+                      <td><a class="btn btn-warning" href="/details/<%= data[i].idpatient %>">Détails</a></td>
                       <% } %>  
                 </tr>
                 <% } %>
