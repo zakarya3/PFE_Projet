@@ -1,5 +1,6 @@
 const { Mongoose } = require("mongoose");
 const passport = require("passport");
+const nodemailer = require('nodemailer');
 const { ensureAuthenticated, ensureRole } = require("../config/auth");
 const User = require("../models/User");
 const Specialitie = require('../models/Specialitie');
@@ -219,7 +220,7 @@ router.post("/reservation", (req, res) => {
       }
     })
     .catch((err) => {
-      res.redirect("/admin-account");
+      res.redirect("/user-account");
     });
 });
 
@@ -305,17 +306,76 @@ router.get("/block/:id", (req, res) => {
 router.get("/accepter/:id", (req, res) => {
   Rdv.findOneAndUpdate( {_id: req.params.id}, {"$set":{"status":true}}, (err, doc) =>{
     if (!err) {
-      console.log("done");
+      const idp = doc.idpatient;
+      const email = req.user.email;
+      const dateRdv = doc.date;
+      const doctorName = req.user.name;
+      User.findOne({name: idp}, (err, docs) => {
+        const emailUser = docs.email;
+        const transporter = nodemailer.createTransport({
+            service : "gmail",
+            auth : {
+                user : "tt1459000@gmail.com",
+                pass : "Test25042022"
+            }
+        });
+        
+        const option ={
+            from : email,
+            to : emailUser,
+            subject : "Rendez-vous chez le doctor "+doctorName,
+            text : "Votre rendez-vous a été confirmé dans le "+dateRdv
+        };
+        
+        transporter.sendMail(option, function (err, info) { 
+            if (err) {
+                console.log(err);
+                return;
+            }
+            console.log("sent: "+info.response);
+        });
+      });
       res.redirect("/request");
     } else {
       console.log(err);
     }
   })
+
+
+
 });
 router.get("/refuser/:id", (req, res) => {
   Rdv.findOneAndUpdate( {_id: req.params.id}, {"$set":{"status":false}}, (err, doc) =>{
     if (!err) {
-      console.log("done");
+      const idp = doc.idpatient;
+      const email = req.user.email;
+      const dateRdv = doc.date;
+      const doctorName = req.user.name;
+      User.findOne({name: idp}, (err, docs) => {
+        const emailUser = docs.email;
+        const transporter = nodemailer.createTransport({
+            service : "gmail",
+            auth : {
+                user : "tt1459000@gmail.com",
+                pass : "Test25042022"
+            }
+        });
+        
+        const option ={
+            from : email,
+            to : emailUser,
+            subject : "Rendez-vous chez le doctor "+doctorName,
+            text : "Votre rendez-vous a été refuser dans le "+dateRdv+" s'il vous plait de changer la date et merci."
+        };
+        
+        transporter.sendMail(option, function (err, info) { 
+            if (err) {
+                console.log(err);
+                return;
+            }
+            console.log("sent: "+info.response);
+        });
+      });
       res.redirect("/request");
     } else {
       console.log(err);
@@ -337,6 +397,30 @@ router.get("/request",
       } else {
         console.log("falid"+err);
       }
+    }); 
+    
+  }
+);
+
+router.get("/details/:id",
+  ensureAuthenticated,
+  ensureRole("Doctor"),
+  (req, res) => {
+    User.findOne({name: req.params.id}, (err, docs) => {
+      const patientName = docs.name;
+      console.log(patientName);
+      Rdv.find({idpatient: patientName}, (err, doc) => {
+      
+        if (!err) {
+          res.render("pages/doctor/details",{
+            data: docs,
+            dataPat: doc,
+            user: req.user
+          })
+        } else {
+          console.log("falid"+err);
+        }
+      });
     }); 
     
   }
