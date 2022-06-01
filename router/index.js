@@ -408,7 +408,6 @@ router.get("/details/:id",
   (req, res) => {
     User.findOne({name: req.params.id}, (err, docs) => {
       const patientName = docs.name;
-      console.log(patientName);
       Rdv.find({idpatient: patientName}, (err, doc) => {
       
         if (!err) {
