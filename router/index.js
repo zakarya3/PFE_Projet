@@ -5,10 +5,38 @@ const { ensureAuthenticated, ensureRole } = require("../config/auth");
 const User = require("../models/User");
 const Specialitie = require('../models/Specialitie');
 const Rdv = require('../models/Rdv');
+const Ord = require('../models/Ord');
 const router = require("express").Router();
 router.get("/", (req, res) => {
   res.render("pages/index");
 });
+
+router.get("/test", (req, res) => {
+  const transporter = nodemailer.createTransport({
+    host : "smtp.hostinger.com",
+    auth : {
+        user : "contact@intervention-thermique.com",
+        pass : "contactintervention10"
+    }
+  });
+
+  const option ={
+      from : "contact@intervention-thermique.com",
+      to : "zakaria.aanni@gmail.com",
+      subject : "Rendez-vous chez le doctor ",
+      text : "Votre rendez-vous a été confirmé dans le "
+  };
+
+  transporter.sendMail(option, function (err, info) { 
+      if (err) {
+          console.log(err);
+          return;
+      }
+      console.log("sent: "+info.response);
+  });
+});
+
+
 router.get("/register", function (req, res, next) {
   Specialitie.find((err, docs) => {
     if (!err) {
@@ -303,6 +331,8 @@ router.get("/block/:id", (req, res) => {
 });
 
 
+
+
 router.get("/accepter/:id", (req, res) => {
   Rdv.findOneAndUpdate( {_id: req.params.id}, {"$set":{"status":true}}, (err, doc) =>{
     if (!err) {
@@ -313,15 +343,15 @@ router.get("/accepter/:id", (req, res) => {
       User.findOne({name: idp}, (err, docs) => {
         const emailUser = docs.email;
         const transporter = nodemailer.createTransport({
-            service : "gmail",
+            host : "smtp.hostinger.com",
             auth : {
-                user : "tt1459000@gmail.com",
-                pass : "Test25042022"
+                user : "contact@xtramega.ma",
+                pass : "David2008"
             }
         });
         
         const option ={
-            from : email,
+            from : "contact@xtramega.ma",
             to : emailUser,
             subject : "Rendez-vous chez le doctor "+doctorName,
             text : "Votre rendez-vous a été confirmé dans le "+dateRdv
@@ -354,18 +384,18 @@ router.get("/refuser/:id", (req, res) => {
       User.findOne({name: idp}, (err, docs) => {
         const emailUser = docs.email;
         const transporter = nodemailer.createTransport({
-            service : "gmail",
+            host : "smtp.hostinger.com",
             auth : {
-                user : "tt1459000@gmail.com",
-                pass : "Test25042022"
+                user : "contact@xtramega.ma",
+                pass : "David2008"
             }
         });
         
         const option ={
-            from : email,
+            from : "contact@xtramega.ma",
             to : emailUser,
             subject : "Rendez-vous chez le doctor "+doctorName,
-            text : "Votre rendez-vous a été refuser dans le "+dateRdv+" s'il vous plait de changer la date et merci."
+            text : "Votre rendez-vous a été refuser."
         };
         
         transporter.sendMail(option, function (err, info) { 
@@ -424,6 +454,339 @@ router.get("/details/:id",
     
   }
 );
+
+router.get("/ordonnace/:id",
+  ensureAuthenticated,
+  ensureRole("Doctor"),
+  (req, res) => {
+    User.findOne({name: req.params.id}, (err, docs) => {
+      const patientName = docs.name;
+      Rdv.find({idpatient: patientName}, (err, doc) => {
+      
+        if (!err) {
+          res.render("pages/doctor/ordonnace",{
+            data: docs,
+            dataPat: doc,
+            user: req.user
+          })
+        } else {
+          console.log("falid"+err);
+        }
+      });
+    }); 
+    
+  }
+);
+
+router.post("/ordonnace/:id", (req, res) => {
+  const { body } = req;
+  const { patient, medecin, ft_md, sd_md, td_md, fd_md, fvd_md, sxt_md, message, address, phone, price} = body;
+  const newOrd = new Ord({
+    patient,
+    medecin,
+    ft_md,
+    sd_md,
+    td_md,
+    fd_md,
+    fvd_md, 
+    sxt_md,
+    message,
+    price,
+  });
+  newOrd
+    .save()
+    .then((result) => {
+      if (result != null) {
+        User.findOne({name: req.params.id}, (err, docs) => {
+          const emailUser = docs.email;
+          const patient = body.patient;
+          const medecin = body.medecin;
+          const ft_md = body.ft_md;
+          const sd_md = body.sd_md;
+          const td_md = body.td_md;
+          const fvd_md = body.fvd_md; 
+          const fd_md = body.fd_md;
+          const sxt_md = body.sxt_md;
+          const message = body.message; 
+          const phone = body.phone;
+          const address = body.address;
+          const price = body.price;
+          const transporter = nodemailer.createTransport({
+              host : "smtp.hostinger.com",
+              auth : {
+                  user : "contact@xtramega.ma",
+                  pass : "David2008"
+              }
+          });
+          
+          const option ={
+              from : "contact@xtramega.ma",
+              to : emailUser,
+              subject : "Ordonnace",
+              html : `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+              <html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
+              
+              <head>
+                  <meta charset="UTF-8">
+                  <meta content="width=device-width, initial-scale=1" name="viewport">
+                  <meta name="x-apple-disable-message-reformatting">
+                  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                  <meta content="telephone=no" name="format-detection">
+                  <title></title>
+                  <!--[if (mso 16)]>
+                                <style type="text/css">
+                                a {text-decoration: none;}
+                                </style>
+                                <![endif]-->
+                  <!--[if gte mso 9]><style>sup { font-size: 100% !important; }</style><![endif]-->
+                  <!--[if gte mso 9]>
+                            <xml>
+                                <o:OfficeDocumentSettings>
+                                <o:AllowPNG></o:AllowPNG>
+                                <o:PixelsPerInch>96</o:PixelsPerInch>
+                                </o:OfficeDocumentSettings>
+                            </xml>
+                            <![endif]-->
+              </head>
+              
+              <body data-new-gr-c-s-loaded="14.1062.0">
+                  <div class="es-wrapper-color">
+                      <!--[if gte mso 9]>
+                                  <v:background xmlns:v="urn:schemas-microsoft-com:vml" fill="t">
+                                    <v:fill type="tile" color="#ffffff"></v:fill>
+                                  </v:background>
+                                <![endif]-->
+                      <table class="es-wrapper" width="100%" cellspacing="0" cellpadding="0">
+                          <tbody>
+                              <tr>
+                                  <td class="esd-email-paddings" valign="top">
+                                      <table cellpadding="0" cellspacing="0" class="es-content esd-header-popover" align="center">
+                                          <tbody>
+                                              <tr>
+                                                  <td class="esd-stripe" align="center" esd-custom-block-id="392285">
+                                                      <table class="es-content-body" width="750" cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center">
+                                                          <tbody>
+                                                              <tr>
+                                                                  <td class="esd-structure es-p15t es-p15b es-p20r es-p20l" align="left">
+                                                                      <table width="100%" cellspacing="0" cellpadding="0">
+                                                                          <tbody>
+                                                                              <tr>
+                                                                                  <td class="esd-container-frame" width="710" valign="top" align="center">
+                                                                                      <table width="100%" cellspacing="0" cellpadding="0">
+                                                                                          <tbody>
+                                                                                              <tr>
+                                                                                                  <td class="esd-block-text es-infoblock" align="center" esd-links-underline="none">
+                                                                                                      <p><a target="_blank" href="https://viewstripo.email" style="text-decoration: none;">View email in your browser</a></p>
+                                                                                                  </td>
+                                                                                              </tr>
+                                                                                          </tbody>
+                                                                                      </table>
+                                                                                  </td>
+                                                                              </tr>
+                                                                          </tbody>
+                                                                      </table>
+                                                                  </td>
+                                                              </tr>
+                                                          </tbody>
+                                                      </table>
+                                                  </td>
+                                              </tr>
+                                          </tbody>
+                                      </table>
+                                      <table cellpadding="0" cellspacing="0" class="es-header" align="center">
+                                          <tbody>
+                                              <tr>
+                                                  <td class="esd-stripe" align="center" bgcolor="#efefef" style="background-color: #efefef;">
+                                                      <table bgcolor="#ffffff" class="es-header-body" align="center" cellpadding="0" cellspacing="0" width="750">
+                                                          <tbody>
+                                                              <tr>
+                                                                  <td class="esd-structure es-p10t es-p10b es-p20r es-p20l" align="left">
+                                                                      <table cellpadding="0" cellspacing="0" width="100%">
+                                                                          <tbody>
+                                                                              <tr>
+                                                                                  <td width="710" class="es-m-p0r esd-container-frame" valign="top" align="center">
+                                                                                      <table cellpadding="0" cellspacing="0" width="100%">
+                                                                                          <tbody>
+                                                                                              <tr>
+                                                                                                  <td align="center" class="esd-block-text">
+                                                                                                      <p style="font-size: 32px; line-height: 120%; color: #391716;">${medecin}</p>
+                                                                                                  </td>
+                                                                                              </tr>
+                                                                                          </tbody>
+                                                                                      </table>
+                                                                                  </td>
+                                                                              </tr>
+                                                                          </tbody>
+                                                                      </table>
+                                                                  </td>
+                                                              </tr>
+                                                              <tr>
+                                                                  <td class="esd-structure es-p20t es-p30r es-p30l" align="left">
+                                                                      <!--[if mso]><table width="690" cellpadding="0" cellspacing="0"><tr><td width="335" valign="top"><![endif]-->
+                                                                      <table cellpadding="0" cellspacing="0" class="es-left" align="left">
+                                                                          <tbody>
+                                                                              <tr>
+                                                                                  <td width="335" class="es-m-p20b esd-container-frame" align="left">
+                                                                                      <table cellpadding="0" cellspacing="0" width="100%">
+                                                                                          <tbody>
+                                                                                              <tr>
+                                                                                                  <td align="left" class="esd-block-text">
+                                                                                                      <p style="font-size: 24px;">Phone : ${phone}</p>
+                                                                                                  </td>
+                                                                                              </tr>
+                                                                                          </tbody>
+                                                                                      </table>
+                                                                                  </td>
+                                                                              </tr>
+                                                                          </tbody>
+                                                                      </table>
+                                                                      <!--[if mso]></td><td width="20"></td><td width="335" valign="top"><![endif]-->
+                                                                      <table cellpadding="0" cellspacing="0" class="es-right" align="right">
+                                                                          <tbody>
+                                                                              <tr>
+                                                                                  <td width="335" align="left" class="esd-container-frame">
+                                                                                      <table cellpadding="0" cellspacing="0" width="100%">
+                                                                                          <tbody>
+                                                                                              <tr>
+                                                                                                  <td align="left" class="esd-block-text">
+                                                                                                      <p style="font-size: 24px;">Adresse : ${address}</p>
+                                                                                                  </td>
+                                                                                              </tr>
+                                                                                          </tbody>
+                                                                                      </table>
+                                                                                  </td>
+                                                                              </tr>
+                                                                          </tbody>
+                                                                      </table>
+                                                                      <!--[if mso]></td></tr></table><![endif]-->
+                                                                  </td>
+                                                              </tr>
+                                                          </tbody>
+                                                      </table>
+                                                  </td>
+                                              </tr>
+                                          </tbody>
+                                      </table>
+                                      <table class="es-content" cellspacing="0" cellpadding="0" align="center">
+                                          <tbody>
+                                              <tr>
+                                                  <td class="esd-stripe" align="center">
+                                                      <table class="es-content-body" style="background-color: #ffffff;" width="750" cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center">
+                                                          <tbody>
+                                                              <tr>
+                                                                  <td class="esd-structure es-p30t es-p30b es-p20r es-p20l" align="left">
+                                                                      <table width="100%" cellspacing="0" cellpadding="0">
+                                                                          <tbody>
+                                                                              <tr>
+                                                                                  <td class="es-m-p0r esd-container-frame" width="710" valign="top" align="center">
+                                                                                      <table width="100%" cellspacing="0" cellpadding="0">
+                                                                                          <tbody>
+                                                                                              <tr>
+                                                                                                  <td align="center" class="esd-block-image es-p40r es-p40l" style="font-size: 0px;">
+                                                                                                      <a target="_blank" href="https://viewstripo.email"><img class="adapt-img" src="https://img.freepik.com/free-vector/health-day-background-design_1142-709.jpg?t=st=1654721615~exp=1654722215~hmac=aeabe492e488c0c121799e90817d9c3b317f1d23891d57831326b2c8ab760aa9&w=740" alt style="display: block;" width="480"></a>
+                                                                                                  </td>
+                                                                                              </tr>
+                                                                                              <tr>
+                                                                                                  <td align="center" class="esd-block-text">
+                                                                                                      <p style="font-size: 30px; line-height: 150%;">${patient}</p>
+                                                                                                  </td>
+                                                                                              </tr>
+                                                                                          </tbody>
+                                                                                      </table>
+                                                                                  </td>
+                                                                              </tr>
+                                                                          </tbody>
+                                                                      </table>
+                                                                  </td>
+                                                              </tr>
+                                                          </tbody>
+                                                      </table>
+                                                  </td>
+                                              </tr>
+                                          </tbody>
+                                      </table>
+                                      <table cellpadding="0" cellspacing="0" class="esd-footer-popover es-footer" align="center">
+                                          <tbody>
+                                              <tr>
+                                                  <td class="esd-stripe" align="center" bgcolor="#ecebeb" style="background-color: #ecebeb;">
+                                                      <table bgcolor="#ffffff" class="es-footer-body" align="center" cellpadding="0" cellspacing="0" width="750">
+                                                          <tbody>
+                                                              <tr>
+                                                                  <td class="esd-structure es-p20" align="left" esd-custom-block-id="392284">
+                                                                      <table cellpadding="0" cellspacing="0" width="100%">
+                                                                          <tbody>
+                                                                              <tr>
+                                                                                  <td width="710" class="esd-container-frame" align="center" valign="top">
+                                                                                      <table cellpadding="0" cellspacing="0" width="100%">
+                                                                                          <tbody>
+                                                                                              <tr>
+                                                                                                  <td align="left" class="esd-block-text es-p40">
+                                                                                                      <p style="font-size: 28px;"><strong>${ft_md}<br>${sd_md}<br>${td_md}<br>${fd_md}<br>${fvd_md}<br>${sxt_md}<br>${message}</strong></p>
+                                                                                                  </td>
+                                                                                              </tr>
+                                                                                          </tbody>
+                                                                                      </table>
+                                                                                  </td>
+                                                                              </tr>
+                                                                          </tbody>
+                                                                      </table>
+                                                                  </td>
+                                                              </tr>
+                                                              <tr>
+                                                                  <td class="esd-structure es-p20t es-p30r es-p30l" align="left">
+                                                                      <table cellpadding="0" cellspacing="0" width="100%">
+                                                                          <tbody>
+                                                                              <tr>
+                                                                                  <td width="690" class="esd-container-frame" align="center" valign="top">
+                                                                                      <table cellpadding="0" cellspacing="0" width="100%">
+                                                                                          <tbody>
+                                                                                              <tr>
+                                                                                                  <td align="left" class="esd-block-text">
+                                                                                                      <h3><a href="https://www.lecomparateurassurance.com/10-guide-mutuelle/104492-calculer-remboursement-mutuelle/prix-consultation-medecin-generaliste">Le prix de la consultation</a>&nbsp;: ${price} DH</h3>
+                                                                                                  </td>
+                                                                                              </tr>
+                                                                                          </tbody>
+                                                                                      </table>
+                                                                                  </td>
+                                                                              </tr>
+                                                                          </tbody>
+                                                                      </table>
+                                                                  </td>
+                                                              </tr>
+                                                          </tbody>
+                                                      </table>
+                                                  </td>
+                                              </tr>
+                                          </tbody>
+                                      </table>
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </body>
+              
+              </html>`
+          };
+          
+          transporter.sendMail(option, function (err, info) { 
+              if (err) {
+                  console.log(err);
+                  return;
+              }
+              console.log("sent: "+info.response);
+          });
+        });
+        res.redirect("/doctor-account");
+      } else {
+        res.redirect("/admin-account");
+      }
+    })
+    .catch((err) => {
+      res.redirect("/user-account");
+    });
+});
+
 
 
 
