@@ -13,15 +13,15 @@ router.get("/", (req, res) => {
 
 router.get("/test", (req, res) => {
   const transporter = nodemailer.createTransport({
-    host : "smtp.hostinger.com",
+    host : "smtp.gmail.com",
     auth : {
-        user : "contact@intervention-thermique.com",
-        pass : "contactintervention10"
+        user : "wazarcontact@gmail.com",
+        pass : "ekxgzffdcxszyfqk"
     }
   });
 
   const option ={
-      from : "contact@intervention-thermique.com",
+      from : "wazarcontact@gmail.com",
       to : "zakaria.aanni@gmail.com",
       subject : "Rendez-vous chez le doctor ",
       text : "Votre rendez-vous a été confirmé dans le "
@@ -343,15 +343,15 @@ router.get("/accepter/:id", (req, res) => {
       User.findOne({name: idp}, (err, docs) => {
         const emailUser = docs.email;
         const transporter = nodemailer.createTransport({
-            host : "smtp.hostinger.com",
+            host : "smtp.gmail.com",
             auth : {
-                user : "contact@xtramega.ma",
-                pass : "David2008"
+                user : "wazarcontact@gmail.com",
+                pass : "ekxgzffdcxszyfqk"
             }
         });
         
         const option ={
-            from : "contact@xtramega.ma",
+            from : "wazarcontact@gmail.com",
             to : emailUser,
             subject : "Rendez-vous chez le doctor "+doctorName,
             text : "Votre rendez-vous a été confirmé dans le "+dateRdv
@@ -384,15 +384,15 @@ router.get("/refuser/:id", (req, res) => {
       User.findOne({name: idp}, (err, docs) => {
         const emailUser = docs.email;
         const transporter = nodemailer.createTransport({
-            host : "smtp.hostinger.com",
+            host : "smtp.gmail.com",
             auth : {
-                user : "contact@xtramega.ma",
-                pass : "David2008"
+                user : "wazarcontact@gmail.com",
+                pass : "ekxgzffdcxszyfqk"
             }
         });
         
         const option ={
-            from : "contact@xtramega.ma",
+            from : "wazarcontact@gmail.com",
             to : emailUser,
             subject : "Rendez-vous chez le doctor "+doctorName,
             text : "Votre rendez-vous a été refuser."
@@ -512,15 +512,15 @@ router.post("/ordonnace/:id", (req, res) => {
           const address = body.address;
           const price = body.price;
           const transporter = nodemailer.createTransport({
-              host : "smtp.hostinger.com",
+              host : "smtp.gmail.com",
               auth : {
-                  user : "contact@xtramega.ma",
-                  pass : "David2008"
+                  user : "wazarcontact@gmail.com",
+                  pass : "ekxgzffdcxszyfqk"
               }
           });
           
           const option ={
-              from : "contact@xtramega.ma",
+              from : "wazarcontact@gmail.com",
               to : emailUser,
               subject : "Ordonnace",
               html : `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
